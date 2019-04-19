@@ -4,15 +4,9 @@ from django.utils import timezone
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from django.contrib.auth.models import User
+
 LAST_CREATED_ACCOUNT_NO = 1000000
-
-
-class User(models.Model):
-    """Main User class"""
-    name = models.CharField(max_length=30)
-    surname = models.CharField(max_length=30)
-    join_dt = models.DateField(default=timezone.now)
-    quit_dt = models.DateField(default=datetime.date(2099, 1, 1))
 
 
 class Account(models.Model):
@@ -46,7 +40,7 @@ class TransactionHistory(models.Model):
 class Client(User):
     """The model of a client with account info and priority level"""
     accounts = models.ForeignKey(Account, on_delete=models.CASCADE,
-                                 related_name='owner')
+                                 related_name='owner', null=True)
     level = models.PositiveSmallIntegerField(validators=[
                                              MinValueValidator(1),
                                              MaxValueValidator(3)],
