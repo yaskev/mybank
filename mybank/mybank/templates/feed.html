@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block next %}
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle col-lg-4 offset-4 mt-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% block button_text %} All accounts {% endblock %}
+        </button>
+        <div class="dropdown-menu col-lg-4" aria-labelledby="dropdownMenuButton">
+            {% for acc in accounts %}
+                <a class="dropdown-item" href={{ acc.id }}> №: {{ acc.id }} Currency: {{ acc.currency }} </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% block balance %} {% endblock %}
+
+    <div class="container mt-5" align="center">
+    <h3><b> Your recent transactions </b></h3>
+    </div>
+
+    {% block table %}
+    <div class="container mt-5" align="center">
+    <h4> Choose your account to see history </h4>
+    </div>
+    {% endblock %}
+
+{% endblock %}

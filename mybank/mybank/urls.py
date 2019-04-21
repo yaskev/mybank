@@ -16,14 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import TemplateView
 
-from .views import SignUpView
+from .views import SignUpView, MainView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(template_name='login.html')),
     path('signup/', SignUpView.as_view()),
-    path('feed/', TemplateView.as_view(template_name='base.html')),
+    path('feed/<int:account>', MainView.as_view()),
+    path('feed/', TemplateView.as_view(template_name='feed.html')),
+    path('logout/', LogoutView.as_view()),
 ]

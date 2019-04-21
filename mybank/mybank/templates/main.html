@@ -1,0 +1,43 @@
+{% extends "feed.html" %}
+{% block button_text %} №: {{ chosen_account.id }} Currency: {{ chosen_account.currency }} {% endblock %}
+{% block balance %}
+    <div class="alert alert-secondary col-lg-4 offset-4 mt-3" align="center" role="alert">
+        Balance: {{ chosen_account.balance }} {{ chosen_account.currency }}
+    </div>
+{% endblock %}
+
+{% block table %}
+<table class="table table-hover col-lg-8 offset-2">
+    <thead>
+        <tr  align="center">
+        <th  scope="col">#</th>
+        <th  scope="col">Date</th>
+        <th  scope="col">Sender</th>
+        <th  scope="col">Receiver</th>
+        <th  scope="col">Amount</th>
+        <th  scope="col">Comment</th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for t in trans %}
+            <tr>
+                <th scope="row"> {{ forloop.counter }} </th>
+                <td align="center"> {{ t.t_dttm }} </td>
+                {% if t.sender.id == chosen_account.id %}
+                    <td  align="center"> This account </td>
+                {% else %}
+                    <td  align="center"> {{ t.sender.id }} </td>
+                {% endif %}
+                {% if t.receiver.id == chosen_account.id %}
+                    <td  align="center"> This account </td>
+                {% else %}
+                    <td  align="center"> {{ t.sender.id }} </td>
+                {% endif %}
+                <td  align="center"> {{ t.amount }} </td>
+                <td  align="center"> {{ t.comment }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+
+{% endblock %}
