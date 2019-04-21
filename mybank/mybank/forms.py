@@ -21,3 +21,7 @@ class SignUpForm(forms.Form):
         if User.objects.filter(email=data.get('email')).exists():
             raise forms.ValidationError('Not unique email')
 
+
+class CreateAccountForm(forms.Form):
+    currency = forms.ChoiceField(choices=(('RUR', 'RUR'), ('USD', 'USD'), ('EUR', 'EUR')))
+    balance = forms.DecimalField(min_value=0)

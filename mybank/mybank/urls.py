@@ -19,13 +19,21 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import TemplateView
 
-from .views import SignUpView, MainView
+from .views import SignUpView,\
+                    MainView, \
+                    AccountManager, \
+                    AccountDeletion, \
+                    CreateAccountView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(template_name='login.html')),
     path('signup/', SignUpView.as_view()),
+    path('logout/', LogoutView.as_view()),
+
     path('feed/<int:account>', MainView.as_view()),
     path('feed/', TemplateView.as_view(template_name='feed.html')),
-    path('logout/', LogoutView.as_view()),
+    path('accounts/delete/<int:account>', AccountDeletion.as_view()),
+    path('accounts', AccountManager.as_view()),
+    path('newaccount/', CreateAccountView.as_view()),
 ]

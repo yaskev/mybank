@@ -20,21 +20,21 @@
     </thead>
         <tbody>
             {% for t in trans %}
-            <tr>
+            <tr align="center">
                 <th scope="row"> {{ forloop.counter }} </th>
-                <td align="center"> {{ t.t_dttm }} </td>
+                <td> {{ t.t_dttm }} </td>
                 {% if t.sender.id == chosen_account.id %}
-                    <td  align="center"> This account </td>
+                    <td> This account </td>
                 {% else %}
-                    <td  align="center"> {{ t.sender.id }} </td>
+                    <td> {{ t.sender.id }} </td>
                 {% endif %}
                 {% if t.receiver.id == chosen_account.id %}
-                    <td  align="center"> This account </td>
+                    <td> This account </td>
                 {% else %}
-                    <td  align="center"> {{ t.sender.id }} </td>
+                    <td> {{ t.sender.id }} </td>
                 {% endif %}
-                <td  align="center"> {{ t.amount }} </td>
-                <td  align="center"> {{ t.comment }} </td>
+                <td> {{ t.amount }} </td>
+                <td> {{ t.comment }} </td>
             </tr>
             {% endfor %}
         </tbody>

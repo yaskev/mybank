@@ -25,9 +25,9 @@ class Account(models.Model):
 
 class Transaction(models.Model):
     """Stores the movements of money"""
-    sender = models.ForeignKey(Account, on_delete=models.PROTECT,
+    sender = models.ForeignKey(Account, on_delete=models.CASCADE,
                                related_name='outgoing')
-    receiver = models.ForeignKey(Account, on_delete=models.PROTECT,
+    receiver = models.ForeignKey(Account, on_delete=models.CASCADE,
                                  related_name='incoming')
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     comment = models.CharField(max_length=255)

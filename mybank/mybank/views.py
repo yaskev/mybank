@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.db.models import Q
 
 
-from .forms import SignUpForm
+from .forms import SignUpForm, CreateAccountForm
 from .models import Client, Account, Transaction
 
 
@@ -44,3 +44,46 @@ class MainView(TemplateView):
                        'trans': Transaction.objects.filter(
                            Q(sender=account) | Q(receiver=account)),
                        })
+
+
+class AccountManager(TemplateView):
+    template_name = 'accounts.html'
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name,
+                      {'accounts': Client.objects.get
+                       (id=request.user.id).accounts.all()})
+
+
+class AccountDeletion(TemplateView):
+    template_name = 'accounts.html'
+
+    @method_decorator(login_required)
+    def get(self, request, account, *args, **kwargs):
+        Client.objects.get(id=request.user.id).delete_account(account)
+        return HttpResponseRedirect('/accounts')
+
+
+class CreateAccountView(TemplateView):
+    template_name = 'creation.html'
+    form_class = CreateAccountForm
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name,
+                      {'accounts': Client.objects.get
+                       (id=request.user.id).accounts.all()})
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            user = Client.objects.get(id=request.user.id)
+            Account.objects.create(currency=data['currency'],
+                                   balance=data['balance'],
+                                   owner=user)
+            return HttpResponseRedirect('/accounts')
+
+        return render(request, self.template_name, {'form': form})

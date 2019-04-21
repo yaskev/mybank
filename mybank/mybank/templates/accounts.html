@@ -1,1 +1,37 @@
 {% extends "base.html" %}
+
+{% block next %}
+{% block create %}
+<div class="col-lg-2 offset-lg-9 mt-3">
+    <a href="/newaccount" class="btn btn-success" > New account </a>
+</div>
+{% endblock %}
+
+<div class="container mt-5" align="center">
+    <h3><b> Your accounts </b></h3>
+</div>
+
+<table class="table table-hover col-lg-8 offset-2 mt-3">
+    <thead>
+        <tr  align="center">
+        <th  scope="col">#</th>
+        <th  scope="col">Balance</th>
+        <th  scope="col">Currency</th>
+        <th  scope="col">Delete</th>
+        <th  scope="col">History</th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for a in accounts %}
+            <tr align="center">
+                <th scope="row"> {{ a.id }} </th>
+                <td> {{ a.balance }} </td>
+                <td> {{ a.currency }} </td>
+                <td> <a href="/accounts/delete/{{ a.id }}" method="POST" class="btn btn-danger btn-sm active" role="button" aria-pressed="true">Delete</a> </td>
+                <td> <a href="/feed/{{ a.id }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">History</a> </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+
+{% endblock %}
