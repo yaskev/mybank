@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 {% block next %}
+    {% block success %} {% endblock %}
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle col-lg-4 offset-4 mt-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {% block button_text %} All accounts {% endblock %}
         </button>
         <div class="dropdown-menu col-lg-4" aria-labelledby="dropdownMenuButton">
             {% for acc in accounts %}
-                <a class="dropdown-item" href={{ acc.id }}> №: {{ acc.id }} Currency: {{ acc.currency }} </a>
+                <a class="dropdown-item" href="/feed/{{ acc.id }}"> №: {{ acc.id }} Currency: {{ acc.currency }} </a>
             {% endfor %}
         </div>
     </div>

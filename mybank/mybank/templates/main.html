@@ -1,4 +1,13 @@
 {% extends "feed.html" %}
+
+{% block success %}
+    {% if successful_transfer %}
+        <div class="alert alert-success col-lg-4 offset-4 mt-3 mb-0" role="alert" align="center">
+            Success!
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block button_text %} №: {{ chosen_account.id }} Currency: {{ chosen_account.currency }} {% endblock %}
 {% block balance %}
     <div class="alert alert-secondary col-lg-4 offset-4 mt-3" align="center" role="alert">

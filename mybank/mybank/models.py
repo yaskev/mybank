@@ -1,4 +1,5 @@
 import datetime
+import decimal
 
 from django.utils import timezone
 from django.db import models
@@ -51,6 +52,17 @@ class Client(User):
 
     def delete_account(self, account_no):
         Account.objects.filter(id=account_no).delete()
+
+    def transfer(self, source_account, target_account, amount, comment):
+        if source_account.id != target_account.id:
+            source_account.balance -= amount
+            target_account.balance += amount
+            source_account.save()
+            target_account.save()
+        Transaction.objects.create(sender=source_account,
+                                   receiver=target_account,
+                                   amount=amount,
+                                   comment=comment)
 
 
 class Admin(User):

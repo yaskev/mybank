@@ -23,7 +23,9 @@ from .views import SignUpView,\
                     MainView, \
                     AccountManager, \
                     AccountDeletion, \
-                    CreateAccountView
+                    CreateAccountView, \
+                    TransferView, \
+                    AdvancedTransferView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,8 +34,12 @@ urlpatterns = [
     path('logout/', LogoutView.as_view()),
 
     path('feed/<int:account>', MainView.as_view()),
+    path('feed/success/<int:account>', MainView.as_view(success=True)),
     path('feed/', TemplateView.as_view(template_name='feed.html')),
     path('accounts/delete/<int:account>', AccountDeletion.as_view()),
-    path('accounts', AccountManager.as_view()),
+    path('accounts/', AccountManager.as_view()),
     path('newaccount/', CreateAccountView.as_view()),
+
+    path('transfer/next/', AdvancedTransferView.as_view()),
+    path('transfer/', TransferView.as_view()),
 ]
