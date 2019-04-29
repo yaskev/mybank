@@ -30,7 +30,8 @@ class Transaction(models.Model):
                                related_name='outgoing')
     receiver = models.ForeignKey(Account, on_delete=models.CASCADE,
                                  related_name='incoming')
-    amount = models.DecimalField(max_digits=15, decimal_places=2)
+    amount_sent = models.DecimalField(max_digits=15, decimal_places=2)
+    amount_received = models.DecimalField(max_digits=15, decimal_places=2)
     comment = models.CharField(max_length=255)
     t_dttm = models.DateTimeField(default=timezone.now)
 
@@ -53,15 +54,16 @@ class Client(User):
     def delete_account(self, account_no):
         Account.objects.filter(id=account_no).delete()
 
-    def transfer(self, source_account, target_account, amount, comment):
+    def transfer(self, source_account, target_account, amount, comment, rate):
         if source_account.id != target_account.id:
             source_account.balance -= amount
-            target_account.balance += amount
+            target_account.balance += amount * decimal.Decimal(rate)
             source_account.save()
             target_account.save()
         Transaction.objects.create(sender=source_account,
                                    receiver=target_account,
-                                   amount=amount,
+                                   amount_sent=amount,
+                                   amount_received=amount * decimal.Decimal(rate),
                                    comment=comment)
 
 

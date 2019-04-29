@@ -65,7 +65,7 @@
         </div>
 
         <div class="form-group">
-            <label for="exampleInputPassword1">Amount of money</label>
+            <label for="exampleInputPassword1">Amount of money(in {{ source_account.currency }})</label>
             <input type="number" class="form-control" name="amount" placeholder="Amount of money" required>
         </div>
 
@@ -73,6 +73,19 @@
             <label for="comment">Comment:</label>
             <textarea class="form-control" rows="3" name="comment" required></textarea>
         </div>
+
+Today's rates:
+        <ul>
+            {% if USD != 1 %}
+            <li><small>{{ source_account.currency }}/USD: {{ USD }} </small></li>
+            {% endif %}
+            {% if EUR != 1 %}
+            <li><small>{{ source_account.currency }}/EUR: {{ EUR }} </small></li>
+            {% endif %}
+            {% if RUR != 1 %}
+            <li><small>{{ source_account.currency }}/RUR: {{ RUR }} </small></li>
+            {% endif %}
+        </ul>
 
         <div class="container">
             <div class="row">

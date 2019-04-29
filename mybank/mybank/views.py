@@ -13,7 +13,7 @@ from .forms import SignUpForm, CreateAccountForm,\
                     TransferForm, AdvancedTransferForm
 from .models import Client, Account, Transaction
 
-RATES_URL = 'https://api.exchangerate-api.com/v4/latest/USD'
+RATES_URL = 'https://api.exchangerate-api.com/v4/latest/'
 
 
 class SignUpView(TemplateView):
@@ -112,11 +112,20 @@ class TransferView(TemplateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             data = form.cleaned_data
+            from_curr = data['send_account'].currency
+            if from_curr == 'RUR':
+                from_curr = 'RUB'
+            prices = requests.get(RATES_URL + from_curr).json()['rates']
+
             return render(request, self.template_name,
                           {'source_account': data['send_account'],
                            'receiver': data['receiver'],
                            'advanced': True,
-                           'rec_accounts': data['receiver'].accounts.all()})
+                           'rec_accounts': data['receiver'].accounts.all(),
+                           'USD': round(prices['USD'], 4),
+                           'EUR': round(prices['EUR'], 4),
+                           'RUR': round(prices['RUB'], 4)
+                           })
 
         return render_to_response(self.template_name, {'form': form})
 
@@ -128,12 +137,23 @@ class AdvancedTransferView(TemplateView):
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+
+        from_curr = Account.objects.get(id=int(form.data['send_account'])).currency
+        if from_curr == 'RUR':
+            from_curr = 'RUB'
+        prices = requests.get(RATES_URL + from_curr).json()['rates']
+
         if form.is_valid():
             data = form.cleaned_data
+            destination_currency = data['receiver_account'].currency
+            if destination_currency == 'RUR':
+                destination_currency = 'RUB'
+            transaction_rate = round(prices[destination_currency], 4)
             data['send_account'].owner.transfer(data['send_account'],
                                                 data['receiver_account'],
                                                 data['amount'],
-                                                data['comment'])
+                                                data['comment'],
+                                                transaction_rate)
 
             return HttpResponseRedirect('/feed/success/' +
                                         str(data['send_account'].id))
@@ -149,7 +169,7 @@ class AdvancedTransferView(TemplateView):
                        'receiver': receiver,
                        'advanced': True,
                        'rec_accounts': rec_counts,
-                    #    'toUSD': toUSD,
-                    #    'toEUR': toEUR,
-                    #    'toRUR': toRUR,
+                       'toUSD': prices['USD'],
+                       'toEUR': prices['EUR'],
+                       'toRUR': prices['RUB'],
                        })

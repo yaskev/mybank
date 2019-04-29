@@ -42,7 +42,11 @@
                 {% else %}
                     <td> {{ t.sender.id }} </td>
                 {% endif %}
-                <td> {{ t.amount }} </td>
+                {% if t.sender.id == chosen_account.id %}
+                    <td> {{ t.amount_sent }} </td>
+                {% else %}
+                    <td> {{ t.amount_received }} </td>
+                {% endif %}
                 <td> {{ t.comment }} </td>
             </tr>
             {% endfor %}
