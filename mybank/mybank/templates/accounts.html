@@ -27,7 +27,7 @@
                 <th scope="row"> {{ a.id }} </th>
                 <td> {{ a.balance }} </td>
                 <td> {{ a.currency }} </td>
-                <td> <a href="/accounts/delete/{{ a.id }}" method="POST" class="btn btn-danger btn-sm active" role="button" aria-pressed="true">Delete</a> </td>
+                <td> <a href="/accounts/delete/{{ a.id }}" class="btn btn-danger btn-sm active" role="button" aria-pressed="true">Delete</a> </td>
                 <td> <a href="/feed/{{ a.id }}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">History</a> </td>
             </tr>
             {% endfor %}

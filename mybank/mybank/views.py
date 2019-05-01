@@ -34,7 +34,7 @@ class SignUpView(TemplateView):
                                        password=data['password1'],
                                        first_name=data['name'],
                                        last_name=data['surname'])
-            return HttpResponse('User created successfully')
+            return HttpResponseRedirect('/login/')
 
         return render(request, self.template_name, {'form': form})
 
@@ -67,7 +67,7 @@ class AccountDeletion(TemplateView):
     template_name = 'accounts.html'
 
     @method_decorator(login_required)
-    def post(self, request, account, *args, **kwargs):
+    def get(self, request, account, *args, **kwargs):
         Client.objects.get(id=request.user.id).delete_account(account)
         return HttpResponseRedirect('/accounts')
 
