@@ -40,7 +40,7 @@
                 {% if t.receiver.id == chosen_account.id %}
                     <td> This account </td>
                 {% else %}
-                    <td> {{ t.sender.id }} </td>
+                    <td> {{ t.receiver.id }} </td>
                 {% endif %}
                 {% if t.sender.id == chosen_account.id %}
                     <td> {{ t.amount_sent }} </td>
