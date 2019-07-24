@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block next %}
+    {% if form.errors %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger col-lg-4 offset-4 mt-3" align="center">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="container col-lg-4 offset-4 mt-3">
+    {% if advanced %}
+    <form action="/transfer/next/" method="POST">
+    {% else %}
+    <form action="" method="POST">
+    {% endif %}
+    {% csrf_token %}
+        <div class="form-group">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Your account</label>
+            <select class="custom-select mr-sm-2" name="send_account"> {% if advanced %}
+                    <option value={{ source_account.id }} selected="selected"> #{{ source_account.id }}: {{ source_account.balance }} {{ source_account.currency }} </option>
+                {% else %}
+            
+                {% for account in client_accounts %}
+                    <option value={{ account.id }}> #{{ account.id }}: {{ account.balance }} {{ account.currency }} </option>
+                {% endfor %}
+
+                {% endif %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Receiver's name</label>
+            <select class="custom-select mr-sm-2" name="receiver"> {% if advanced %}
+                    <option value={{ receiver.id }} selected="selected">{{ receiver.first_name }} {{ receiver.last_name }}</option>
+                {% else %}
+
+                {% for rec in rec_list %}
+                    <option value={{ rec.id }}> {{ rec.first_name }} {{ rec.last_name }}</option>
+                {% endfor %}
+
+                {% endif %}
+            </select>
+        </div>
+
+        {% if advanced %}
+            <a href="/transfer" class="btn btn-secondary"> Back </a>
+        {% else %}
+            <button type="submit" class="btn btn-secondary">Next...</button>
+        {% endif %}
+        
+        <br>
+        <br>
+
+        {% if advanced %}
+
+         <div class="form-group">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Receiver's account</label>
+            <select class="custom-select mr-sm-2" name="receiver_account">
+            {% for account in rec_accounts %}
+                <option value={{ account.id }}> #{{ account.id }}: {{ account.currency }} </option>
+            {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputPassword1">Amount of money(in {{ source_account.currency }})</label>
+            <input type="decimal" class="form-control" name="amount" placeholder="Amount of money" required>
+        </div>
+
+        <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control" rows="3" name="comment" required></textarea>
+        </div>
+
+Today's rates:
+        <ul>
+            {% if USD != 1 %}
+            <li><small>{{ source_account.currency }}/USD: {{ USD }} </small></li>
+            {% endif %}
+            {% if EUR != 1 %}
+            <li><small>{{ source_account.currency }}/EUR: {{ EUR }} </small></li>
+            {% endif %}
+            {% if RUR != 1 %}
+            <li><small>{{ source_account.currency }}/RUR: {{ RUR }} </small></li>
+            {% endif %}
+        </ul>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <button type="submit" class="btn btn-success">Transfer</button>
+                </div>
+                <div class="col-sm offset-5">
+                    <a href="/feed" class="btn btn-danger"> Cancel </a>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+
+    </form>
+    </div>
+{% endblock %}
