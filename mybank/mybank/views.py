@@ -2,7 +2,7 @@ import requests
 
 from django.views.generic import TemplateView
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -127,7 +127,7 @@ class TransferView(TemplateView):
                            'RUR': round(prices['RUB'], 4)
                            })
 
-        return render_to_response(self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form})
 
 
 class AdvancedTransferView(TemplateView):
