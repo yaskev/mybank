@@ -7,6 +7,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - USE_PG_DB=True
       - POSTGRES_HOST=mybank_db:5432
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

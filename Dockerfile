@@ -14,5 +14,5 @@ EXPOSE 8000
 
 RUN python3 mybank/manage.py migrate
 
-#ENTRYPOINT ["python3"]
-CMD ["python3", "mybank/manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["python3"]
+CMD ["mybank/manage.py", "runserver", "0.0.0.0:8000"]
