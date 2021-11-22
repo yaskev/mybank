@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  app:
+    image: mybank
+    restart: on-failure
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_HOST=mybank_db:5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - DEBUG=True
+    depends_on:
+      - db
+
+  db:
+    image: "postgres:latest"
+    hostname: mybank_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
